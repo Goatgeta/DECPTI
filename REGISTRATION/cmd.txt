@@ -1,0 +1,18 @@
+django-admin startpeoject registration
+
+cd \tab
+
+python manage.py startapp app1
+
+include new app in APPS
+
+create new template folder and include in template (IN SETTING)
+
+
+define functions in migrations  in views.com
+
+set urls of page in registration urls.py
+
+python manage.py makemigrations
+
+python manage.py createsuperuser
