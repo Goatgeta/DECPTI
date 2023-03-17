@@ -27,12 +27,13 @@ urlpatterns = [
     # path('logout/',views.LogOut,name='logout'),
     # path('',views.user_login,name='user_login'),
 
-    path('',al.index,name='index'),
+    path('',views.user_login,name='user_login'),
+    path('Admin_login',al.index,name='index'),
     path('Customer_login/',al.Customer_login,name='Customer_login'),
     path('Admin_dashboard/',al.Admin_dashboard,name='Admin_dashboard'),
     path('Custmor_dashboard/',al.Custmor_dashboard,name='Custmor_dashboard'),
-    path('manage/',al.manage,name='manage')
-    
+    path('manage/',al.manage,name='manage'),
+    path('location/',al.location,name='location')
 
 ]
 

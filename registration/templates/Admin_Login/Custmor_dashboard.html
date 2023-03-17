@@ -46,7 +46,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 <div class="w3-main" style="margin-left:300px;margin-top:43px;">
   <!-- Header -->
   <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-dashboard"></i> Current Status</b></h5>
+    <h5 style="font-size:20px;"><b><i class="fa fa-dashboard fa-2x"></i> Current Status</b></h5>
   </header>
 <br>
   <div class="w3-row-padding w3-margin-bottom">
@@ -58,14 +58,14 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
           <h3>{{token}}</h3>
         </div>
         <div class="w3-clear"></div>
-        <h4> <a href="#" style="text-decoration:none"> Your Token ID &nbsp;</a></h4>
+        <h4> <a style="text-decoration:none"> Your Token ID &nbsp;</a></h4>
       </div>
     </div>
     <div class="w3-quarter">
       <div class="w3-container w3-red w3-padding-16">
         <div class="w3-left"><i class="fa fa-male  w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <h3>26</h3>
+          <h3>{{Current}}</h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Current Token No</h4>
@@ -85,7 +85,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       <div class="w3-container w3-blue w3-text-white w3-padding-16">
         <div class="w3-left"><i class="fa fa-clock-o w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <h3></h3>
+          <h3> <span id="timer-display">00:00:00</span></h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Estimated Time</h4>
@@ -93,7 +93,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     </div>
   </div>
   <header class="w3-container" style="padding-top:22px">
-    <h5><b><i class="fa fa-globe fa-5x"></i>Places To Visit In Your Free Time</b></h5>
+    <h5 style="font-size:20px;"><b><i class="fa fa-globe fa-2x"></i> Places To Visit In Your Free Time</b></h5>
   </header>
   
   <div class="w3-row-padding w3-margin-bottom">
@@ -105,7 +105,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
           <h3>&nbsp;</h3>
         </div>
         <div class="w3-clear"></div>
-        <h4> <a href="#" style="text-decoration:none"> Hotel Near You &nbsp;</a></h4>
+        <h4> <a href="{% url 'location' %}" style="text-decoration:none"> Hotel Near You &nbsp;</a></h4>
       </div>
     </div>
     <div class="w3-quarter">
@@ -141,6 +141,41 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   
 </div>
 
+
+<script >
+  var seconds = 0;
+  var min = 30*("{{token}}"-"{{Current}}");
+  var minutes = min%60
+  var hours = Math.floor(min/60);
+
+
+  function timer() {
+    
+
+    if (seconds == 0) {
+      seconds = 60;
+      if (minutes==0){
+        minutes=60;
+        hours--;
+      }
+      minutes--;
+    }
+
+    if (minutes == 0) {
+      minutes = 60;
+      hours--;
+    }
+    seconds--;
+
+    var displaySeconds = seconds < 10 ? "0" + seconds : seconds;
+    var displayMinutes = minutes < 10 ? "0" + minutes : minutes;
+    var displayHours = hours < 10 ? "0" + hours : hours;
+
+    var timerDisplay = document.getElementById("timer-display");
+    timerDisplay.textContent = displayHours + ":" + displayMinutes + ":" + displaySeconds;
+  }
+  setInterval(timer, 1000);
+</script>
 <script>
 // Get the Sidebar
 var mySidebar = document.getElementById("mySidebar");

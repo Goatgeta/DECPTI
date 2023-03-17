@@ -1,5 +1,5 @@
 from django.shortcuts import render,HttpResponse,redirect
-from datetime import datetime
+import datetime
 import pyrebase
 
 
@@ -65,10 +65,19 @@ def Customer_login(request):
 
 def Admin_dashboard(request):
     data={}
-    queue=database.child("queue").get().val()
+    queue=database.child("queue").child('Enteries').get().val()
     total=len(queue)
     print("Total = ",total)
     data["Total"]=total
+    cu=database.child("Current_User").get().val()
+    data['Current']=cu
+    time1 = datetime.timedelta(hours=0, minutes=0, seconds=0)
+    time2 = datetime.timedelta(hours=0, minutes=30, seconds=0)
+    if cu == 1:
+        total_time=time1
+    else:
+        total_time=time2*cu
+    data['total_time']=total_time
     return render(request,'Admin_Login/Admin_dashboard.html',data)
 
 def Custmor_dashboard(request):
@@ -78,19 +87,28 @@ def Custmor_dashboard(request):
     print("user info = ",User_info)
     data={}
     for key,val in User_info.items():
+        if key==None:
+            continue
         print(key," : ",val)
         data[key]=val
-    queue=database.child("queue").get().val()
+    queue=database.child("queue").child('Enteries').get().val()
     total=len(queue)
     print("Total = ",total)
     data['total']=total
+    cu=database.child("Current_User").get().val()
+    data['Current']=cu
+    avg_time = datetime.datetime(2022, 3, 17, 0, 30, 0)
+    mul=data['token']-data['Current']
+    # print(avg_time)
+    
     # estimatedtime= 0
     # if total == 1:
     #     estimatedtime_1 = "No Waiting"
     # if total > 1:
     #     estimatedtime = data['Register_time'] * total
     # data['estimatedtime_1']=estimatedtime_1
-    # data['estimatedtime']=estimatedtime
+    data['estimatedtime']=avg_time
+    print(data['estimatedtime'])
     # register_time, mobile, reason, token, usename =  User_info['Register_time'], User_info['mobile'], User_info['token'], User_info['usename']
     # data = {
     #     'rt': register_time,
@@ -102,4 +120,24 @@ def Custmor_dashboard(request):
     return render(request,'Admin_Login/Custmor_dashboard.html',data)
 
 def manage(request):
-    return render(request,'Admin_Login/manage.html')
+    data={}
+    queue=database.child("queue").child('Enteries').get().val()
+    total=len(queue)
+    print("Total = ",total)
+    data["Total"]=total
+    cu=database.child("Current_User").get().val()
+    if cu<total:
+        cu=cu+1
+        database.child('Current_User').set(cu)
+    data['Current']=cu
+    time1 = datetime.timedelta(hours=0, minutes=0, seconds=0)
+    time2 = datetime.timedelta(hours=0, minutes=30, seconds=0)
+    if cu == 1:
+        total_time=time1
+    else:
+        total_time=time2*cu
+    data['total_time']=total_time
+    return render(request,'Admin_Login/Admin_dashboard.html',data)
+
+def location(request):
+    return render(request,'Admin_Login/location.html')
